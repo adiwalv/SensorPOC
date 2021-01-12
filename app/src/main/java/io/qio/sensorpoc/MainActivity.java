@@ -24,7 +24,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
     Sensor sensor;
-    private static DecimalFormat df = new DecimalFormat("0.00");
+    private static final DecimalFormat df = new DecimalFormat("0.00");
     private static final String TAG = "MainActivity";
     private EventRepository eventRepository;
     Event eventBody = new Event();
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         setContentView(R.layout.activity_main);
         getSupportActionBar().setElevation(0);
         SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        eventRepository = eventRepository.getInstance();
+        eventRepository = EventRepository.getInstance();
 
         if (sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER) != null){
             sensor  = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
