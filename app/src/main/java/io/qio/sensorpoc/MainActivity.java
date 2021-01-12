@@ -12,9 +12,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
+
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
     Sensor sensor;
+    private static DecimalFormat df = new DecimalFormat("0.00");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,52 +38,61 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             float x = event.values[0];
             float y = event.values[1];
             float z = event.values[2];
-            TextView txt_number = findViewById(R.id.txt_number);
-            ImageView tv_imageX = findViewById(R.id.tv_imageX);
-            ImageView tv_imageY = findViewById(R.id.tv_imageY);
-            txt_number.setText( "x = "+ x+ " \ny = "+ y +"\nz = " + z);
+            TextView xValue = findViewById(R.id.xValue);
+            TextView yValue = findViewById(R.id.yValue);
+            TextView zValue = findViewById(R.id.zValue);
+            ImageView imageX = findViewById(R.id.imageX);
+            ImageView imageY = findViewById(R.id.imageY);
+            xValue.setText(roundToTwoDecimal(x));
+            yValue.setText(roundToTwoDecimal(y));
+            zValue.setText(roundToTwoDecimal(z));
             if (z >= 9.8 || z <= -9.8) {
-                tv_imageX.setVisibility(View.GONE);
-                tv_imageY.setVisibility(View.GONE);
+                imageX.setVisibility(View.GONE);
+                imageY.setVisibility(View.GONE);
             } else if (y > 0 && (int)x == 0) {
-                tv_imageY.setVisibility(View.VISIBLE);
-                tv_imageX.setVisibility(View.GONE);
-                tv_imageY.setImageResource(R.drawable.ic_arrow_up);
+                imageY.setVisibility(View.VISIBLE);
+                imageX.setVisibility(View.GONE);
+                imageY.setImageResource(R.drawable.ic_arrow_up);
             } else if (y < 0 && (int)x == 0) {
-                tv_imageY.setVisibility(View.VISIBLE);
-                tv_imageX.setVisibility(View.GONE);
-                tv_imageY.setImageResource(R.drawable.ic_arrow_down);
+                imageY.setVisibility(View.VISIBLE);
+                imageX.setVisibility(View.GONE);
+                imageY.setImageResource(R.drawable.ic_arrow_down);
             } else if (x > 0 && (int)y == 0) {
-                tv_imageX.setVisibility(View.VISIBLE);
-                tv_imageY.setVisibility(View.GONE);
-                tv_imageX.setImageResource(R.drawable.ic_arrow_forward);
+                imageX.setVisibility(View.VISIBLE);
+                imageY.setVisibility(View.GONE);
+                imageX.setImageResource(R.drawable.ic_arrow_forward);
             } else if (x < 0 && (int)y == 0) {
-                tv_imageX.setVisibility(View.VISIBLE);
-                tv_imageY.setVisibility(View.GONE);
-                tv_imageX.setImageResource(R.drawable.ic_arrow_back);
+                imageX.setVisibility(View.VISIBLE);
+                imageY.setVisibility(View.GONE);
+                imageX.setImageResource(R.drawable.ic_arrow_back);
             } else if (x > 0 && y > 0) {
-                tv_imageX.setVisibility(View.VISIBLE);
-                tv_imageY.setVisibility(View.VISIBLE);
-                tv_imageX.setImageResource(R.drawable.ic_arrow_forward);
-                tv_imageY.setImageResource(R.drawable.ic_arrow_up);
+                imageX.setVisibility(View.VISIBLE);
+                imageY.setVisibility(View.VISIBLE);
+                imageX.setImageResource(R.drawable.ic_arrow_forward);
+                imageY.setImageResource(R.drawable.ic_arrow_up);
             } else if (x < 0 && y > 0) {
-                tv_imageX.setVisibility(View.VISIBLE);
-                tv_imageY.setVisibility(View.VISIBLE);
-                tv_imageX.setImageResource(R.drawable.ic_arrow_back);
-                tv_imageY.setImageResource(R.drawable.ic_arrow_up);
+                imageX.setVisibility(View.VISIBLE);
+                imageY.setVisibility(View.VISIBLE);
+                imageX.setImageResource(R.drawable.ic_arrow_back);
+                imageY.setImageResource(R.drawable.ic_arrow_up);
             } else if (y < 0 && x >0 ) {
-                tv_imageX.setVisibility(View.VISIBLE);
-                tv_imageY.setVisibility(View.VISIBLE);
-                tv_imageX.setImageResource(R.drawable.ic_arrow_forward);
-                tv_imageY.setImageResource(R.drawable.ic_arrow_down);
+                imageX.setVisibility(View.VISIBLE);
+                imageY.setVisibility(View.VISIBLE);
+                imageX.setImageResource(R.drawable.ic_arrow_forward);
+                imageY.setImageResource(R.drawable.ic_arrow_down);
             } else if (y < 0 && x < 0) {
-                tv_imageX.setVisibility(View.VISIBLE);
-                tv_imageY.setVisibility(View.VISIBLE);
-                tv_imageX.setImageResource(R.drawable.ic_arrow_back);
-                tv_imageY.setImageResource(R.drawable.ic_arrow_down);
+                imageX.setVisibility(View.VISIBLE);
+                imageY.setVisibility(View.VISIBLE);
+                imageX.setImageResource(R.drawable.ic_arrow_back);
+                imageY.setImageResource(R.drawable.ic_arrow_down);
             }
         }
     }
+
+    private String roundToTwoDecimal(float input) {
+        return df.format(input);
+    }
+
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
