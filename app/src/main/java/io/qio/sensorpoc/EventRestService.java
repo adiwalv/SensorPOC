@@ -5,19 +5,19 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public final class EventRepository {
-    private static EventRepository instance;
+public final class EventRestService {
+    private static EventRestService instance;
 
-    private EventService eventService;
+    private EventInterface eventInterface;
 
-    public static EventRepository getInstance() {
+    public static EventRestService getInstance() {
         if (instance == null) {
-            instance = new EventRepository();
+            instance = new EventRestService();
         }
         return instance;
     }
 
-    public EventRepository() {
+    public EventRestService() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
@@ -28,10 +28,10 @@ public final class EventRepository {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        eventService = retrofit.create(EventService.class);
+        eventInterface = retrofit.create(EventInterface.class);
     }
 
-    public EventService getEventService() {
-        return eventService;
+    public EventInterface getEventInterface() {
+        return eventInterface;
     }
 }

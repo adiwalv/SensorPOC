@@ -3,45 +3,45 @@ package io.qio.sensorpoc.domain;
 import com.google.gson.annotations.SerializedName;
 
 public class Event {
-    @SerializedName("xaxis")
-    private Object xaxis;
+    @SerializedName("xAxis")
+    private Object xAxis;
 
-    @SerializedName("yaxis")
-    private Object yaxis;
+    @SerializedName("yAxis")
+    private Object yAxis;
 
-    @SerializedName("zaxis")
-    private Object zaxis;
+    @SerializedName("zAxis")
+    private Object zAxis;
 
-    public Event(Object xaxis, Object yaxis, Object zaxis) {
-        this.xaxis = xaxis;
-        this.yaxis = yaxis;
-        this.zaxis = zaxis;
+    public Event(Object xAxis, Object yAxis, Object zAxis) {
+        this.xAxis = xAxis;
+        this.yAxis = yAxis;
+        this.zAxis = zAxis;
     }
 
-    public void setXaxis(Object xaxis) {
-        this.xaxis = xaxis;
+    public void setxAxis(Object xAxis) {
+        this.xAxis = xAxis;
     }
 
-    public void setYaxis(Object yaxis) {
-        this.yaxis = yaxis;
+    public void setyAxis(Object yAxis) {
+        this.yAxis = yAxis;
     }
 
-    public void setZaxis(Object zaxis) {
-        this.zaxis = zaxis;
+    public void setzAxis(Object zAxis) {
+        this.zAxis = zAxis;
     }
 
     public Event() {
     }
 
-    public Object getXaxis() {
-        return xaxis;
+    public Object getxAxis() {
+        return xAxis;
     }
 
-    public Object getYaxis() {
-        return yaxis;
+    public Object getyAxis() {
+        return yAxis;
     }
 
-    public Object getZaxis() {
-        return zaxis;
+    public Object getzAxis() {
+        return zAxis;
     }
 }

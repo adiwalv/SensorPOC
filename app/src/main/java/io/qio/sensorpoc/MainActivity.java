@@ -1,7 +1,5 @@
 package io.qio.sensorpoc;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -13,6 +11,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.DecimalFormat;
 
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     Sensor sensor;
     private static final DecimalFormat df = new DecimalFormat("0.00");
     private static final String TAG = "MainActivity";
-    private EventRepository eventRepository;
+    private EventRestService eventRestService;
     Event eventBody = new Event();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         setContentView(R.layout.activity_main);
         getSupportActionBar().setElevation(0);
         SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        eventRepository = EventRepository.getInstance();
+        eventRestService = EventRestService.getInstance();
 
         if (sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER) != null){
             sensor  = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -57,10 +57,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             xValue.setText(roundToTwoDecimal(x));
             yValue.setText(roundToTwoDecimal(y));
             zValue.setText(roundToTwoDecimal(z));
-            eventBody.setXaxis(x);
-            eventBody.setYaxis(y);
-            eventBody.setZaxis(z);
-            eventRepository.getEventService().postEvent(eventBody).enqueue(new Callback<Void>() {
+            eventBody.setxAxis(x);
+            eventBody.setyAxis(y);
+            eventBody.setzAxis(z);
+            eventRestService.getEventInterface().postEvent(eventBody).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> r) {
                     Toast.makeText(getApplicationContext(), "X:"+x+" Y:"+y+" Z:"+z+" sent!", Toast.LENGTH_SHORT).show();
