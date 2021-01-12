@@ -8,23 +8,33 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DecimalFormat;
+
+import io.qio.sensorpoc.domain.Event;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
     Sensor sensor;
     private static DecimalFormat df = new DecimalFormat("0.00");
-
+    private static final String TAG = "MainActivity";
+    private EventRepository eventRepository;
+    Event eventBody = new Event();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().setElevation(0);
         SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        eventRepository = eventRepository.getInstance();
 
         if (sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER) != null){
             sensor  = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -47,6 +57,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             xValue.setText(roundToTwoDecimal(x));
             yValue.setText(roundToTwoDecimal(y));
             zValue.setText(roundToTwoDecimal(z));
+            eventBody.setXaxis(x);
+            eventBody.setYaxis(y);
+            eventBody.setZaxis(z);
+            eventRepository.getEventService().postEvent(eventBody).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> r) {
+                    Toast.makeText(getApplicationContext(), "X:"+x+" Y:"+y+" Z:"+z+" sent!", Toast.LENGTH_SHORT).show();
+                }
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Log.e(TAG, t.getLocalizedMessage());
+                    Toast.makeText(getApplicationContext(), "Error posting x, y and z axis" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
             if (z >= 9.8 || z <= -9.8) {
                 imageX.setVisibility(View.GONE);
                 imageY.setVisibility(View.GONE);
